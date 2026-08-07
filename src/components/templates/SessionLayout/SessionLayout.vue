@@ -56,6 +56,8 @@ const emit = defineEmits<{
   toggleSubject: [subjectId: string]
   /** Fired when a subject's remove button is clicked, with that subject's id. */
   removeSubject: [subjectId: string]
+  /** Fired when a subject's inline edit is saved, with that subject's id and the new label/description. */
+  editSubject: [subjectId: string, changes: { label: string; description: string }]
   /** Fired when the new-subject form's label input is edited. */
   'update:newSubjectLabel': [value: string]
   /** Fired when the new-subject form's key input is edited. */
@@ -121,8 +123,10 @@ const reportEntries = computed(() =>
           :duration="duration"
           :active="entry.active"
           :disabled="!playing"
+          :playing="playing"
           @toggle="emit('toggleSubject', entry.subject.id)"
           @remove="emit('removeSubject', entry.subject.id)"
+          @edit="(changes) => emit('editSubject', entry.subject.id, changes)"
         />
         <div class="session-layout__form-card">
           <SubjectForm
@@ -176,12 +180,14 @@ const reportEntries = computed(() =>
   }
 
   &__subjects {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: vars.$spacing-sm;
+    align-items: start;
   }
 
   &__form-card {
+    grid-column: span 2;
     padding: vars.$spacing-md;
     border: 1px solid vars.$timeline-track-color;
     border-radius: 8px;

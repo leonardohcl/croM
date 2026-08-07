@@ -105,6 +105,10 @@ function handleRemoveSubject(subjectId: string) {
   store.removeSubject(subjectId)
 }
 
+function handleEditSubject(subjectId: string, changes: { label: string; description: string }) {
+  store.updateSubject(subjectId, changes)
+}
+
 function handleResume() {
   if (pendingSnapshot.value) store.loadSnapshot(pendingSnapshot.value)
   showResumeDialog.value = false
@@ -165,6 +169,7 @@ function handleAddSubject(subject: { label: string; key: string }) {
       @pause="handlePause"
       @toggle-subject="handleToggleSubject"
       @remove-subject="handleRemoveSubject"
+      @edit-subject="handleEditSubject"
       @update:new-subject-label="(value) => (newSubjectLabel = value)"
       @update:new-subject-key="(value) => (newSubjectKey = value)"
       @add-subject="handleAddSubject"

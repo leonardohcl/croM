@@ -66,4 +66,35 @@ describe('IntervalTimeline', () => {
 
     expect(wrapper.findAll('.timeline-tick')).toHaveLength(5)
   })
+
+  it('shows the recording label while active', () => {
+    const wrapper = mount(IntervalTimeline, {
+      props: { duration: 100, intervals: [{ start: 60, end: null }], active: true },
+    })
+
+    expect(wrapper.find('.interval-timeline__active-label').exists()).toBe(true)
+  })
+
+  it('hides the recording label when not active', () => {
+    const wrapper = mount(IntervalTimeline, {
+      props: { duration: 100, intervals: [], active: false },
+    })
+
+    expect(wrapper.find('.interval-timeline__active-label').exists()).toBe(false)
+  })
+
+  it('omits ticks and the recording label in compact mode, but keeps segments', () => {
+    const wrapper = mount(IntervalTimeline, {
+      props: {
+        duration: 100,
+        intervals: [{ start: 60, end: null }],
+        active: true,
+        compact: true,
+      },
+    })
+
+    expect(wrapper.findAll('.timeline-tick')).toHaveLength(0)
+    expect(wrapper.find('.interval-timeline__active-label').exists()).toBe(false)
+    expect(wrapper.findAll('.timeline-segment')).toHaveLength(1)
+  })
 })

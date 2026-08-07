@@ -26,11 +26,20 @@ const meta: Meta<typeof SubjectCard> = {
       description: "Disables the toggle button, e.g. while the video isn't playing.",
       control: 'boolean',
     },
+    playing: {
+      description:
+        'Whether the video is currently playing. Disables editing, removing, and collapsing the subject while true.',
+      control: 'boolean',
+    },
     onToggle: {
       description: 'Fired when the toggle button is clicked.',
     },
     onRemove: {
-      description: 'Fired when the remove button is clicked.',
+      description:
+        'Fired when removal is confirmed — immediately if the subject has no recorded intervals, otherwise after accepting a confirmation dialog.',
+    },
+    onEdit: {
+      description: 'Fired when an in-progress edit is saved, with the new label and description.',
     },
   },
   decorators: [
@@ -74,5 +83,52 @@ export const Disabled: Story = {
     duration: 180,
     active: false,
     disabled: true,
+  },
+}
+
+/** With a description set — shown below the toggle button, above the timeline. */
+export const WithDescription: Story = {
+  args: {
+    subject: {
+      id: 'a1',
+      label: 'Grooming',
+      key: 'g',
+      description: 'Licking, scratching, or otherwise self-grooming.',
+    },
+    intervals: [{ start: 10, end: 40 }],
+    duration: 180,
+    active: false,
+  },
+}
+
+/** While the video plays, edit and remove are disabled to keep subjects stable mid-recording. */
+export const Playing: Story = {
+  args: {
+    subject: { id: 'a1', label: 'Grooming', key: 'g' },
+    intervals: [{ start: 10, end: 40 }],
+    duration: 180,
+    active: false,
+    playing: true,
+  },
+}
+
+/**
+ * Click the corner button to collapse the card — it shrinks to a wide tile showing
+ * just the name/key and a compact timeline, keeping edit and remove available.
+ */
+export const Collapsible: Story = {
+  args: {
+    subject: {
+      id: 'a1',
+      label: 'Grooming',
+      key: 'g',
+      description: 'Licking, scratching, or otherwise self-grooming.',
+    },
+    intervals: [
+      { start: 10, end: 40 },
+      { start: 90, end: 140 },
+    ],
+    duration: 180,
+    active: false,
   },
 }

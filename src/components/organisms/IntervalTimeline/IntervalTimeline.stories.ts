@@ -18,6 +18,14 @@ const meta: Meta<typeof IntervalTimeline> = {
       description: 'Number of tick marks to render along the timeline, evenly spaced (including both ends).',
       control: 'number',
     },
+    active: {
+      description: 'Whether this subject currently has an open interval. Overlays a pulsing "Recording" label.',
+      control: 'boolean',
+    },
+    compact: {
+      description: 'Renders a thinner track with no ticks or text — just the colored intervals.',
+      control: 'boolean',
+    },
   },
   decorators: [
     () => ({
@@ -42,6 +50,24 @@ export const OneClosedInterval: Story = {
 /** A single interval still open — no end recorded yet, styled distinctly. */
 export const OneOpenInterval: Story = {
   args: { duration: 180, intervals: [{ start: 120, end: null }] },
+}
+
+/** Actively recording — a softly pulsing "Recording" label overlays the track. */
+export const Active: Story = {
+  args: { duration: 180, intervals: [{ start: 120, end: null }], active: true },
+}
+
+/** Compact mode, used on collapsed subject cards — thinner track, no ticks or text. */
+export const Compact: Story = {
+  args: {
+    duration: 180,
+    intervals: [
+      { start: 40, end: 95 },
+      { start: 120, end: null },
+    ],
+    active: true,
+    compact: true,
+  },
 }
 
 /** Many intervals close together, so tick labels risk overlapping. */

@@ -45,6 +45,29 @@ describe('session store', () => {
     expect(store.intervals[subject.id]).toBeUndefined()
   })
 
+  it('updates a subject label and description in place', () => {
+    const store = useSessionStore()
+    const subject = store.addSubject('Grooming', 'g')
+
+    store.updateSubject(subject.id, { label: 'Self-grooming', description: 'Licking or scratching' })
+
+    expect(store.subjects[0]).toEqual({
+      id: subject.id,
+      label: 'Self-grooming',
+      key: 'g',
+      description: 'Licking or scratching',
+    })
+  })
+
+  it('does nothing when updating an unknown subject', () => {
+    const store = useSessionStore()
+    store.addSubject('Grooming', 'g')
+
+    store.updateSubject('missing', { label: 'Nope' })
+
+    expect(store.subjects[0].label).toBe('Grooming')
+  })
+
   it('opens an interval on first toggle and closes it on the second', () => {
     const store = useSessionStore()
     const subject = store.addSubject('Grooming', 'g')

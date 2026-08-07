@@ -4,6 +4,8 @@ export interface Subject {
   label: string
   /** Keyboard key that toggles this subject (e.g. `"a"`, `" "`, `"Enter"`). */
   key: string
+  /** Optional free-text notes about the subject/behavior, shown on its card. */
+  description?: string
 }
 
 /** A single recorded span on a subject's timeline. `end === null` means the interval is still open. */

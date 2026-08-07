@@ -60,6 +60,10 @@ const meta: Meta<typeof SessionLayout> = {
     onRemoveSubject: {
       description: "Fired when a subject's remove button is clicked, with that subject's id.",
     },
+    onEditSubject: {
+      description:
+        "Fired when a subject's inline edit is saved, with that subject's id and the new label/description.",
+    },
     'onUpdate:newSubjectLabel': {
       description: "Fired when the new-subject form's label input is edited.",
     },

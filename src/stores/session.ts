@@ -61,6 +61,14 @@ export const useSessionStore = defineStore('session', {
       delete this.intervals[id]
     },
 
+    /** Updates a subject's label and/or description in place, e.g. from an inline card edit. */
+    updateSubject(id: string, changes: { label?: string; description?: string }) {
+      const subject = this.subjects.find((subject) => subject.id === id)
+      if (!subject) return
+      if (changes.label !== undefined) subject.label = changes.label
+      if (changes.description !== undefined) subject.description = changes.description
+    },
+
     /** Opens a new interval if the subject has none open, otherwise closes the currently open one. */
     toggleSubject(id: string, currentTime: number) {
       const intervals = this.intervals[id]

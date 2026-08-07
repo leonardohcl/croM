@@ -13,9 +13,8 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@primeuix/themes": "^3.0.0",
+    "naive-ui": "^2.44.1",
     "pinia": "^4.0.2",
-    "primevue": "^5.0.0",
     "sass": "^1.102.0",
     "vue": "^3.5.40"
   },

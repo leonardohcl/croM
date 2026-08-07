@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import Button from 'primevue/button'
+import { NButton } from 'naive-ui'
 </script>
 
 <template>
   <main class="app">
     <h1>croM</h1>
     <p>Multi-timer video interval tracking tool — scaffold in progress.</p>
-    <Button label="PrimeVue is wired up" />
+    <NButton>Naive UI is wired up</NButton>
   </main>
 </template>
 

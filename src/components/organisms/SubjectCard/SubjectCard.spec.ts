@@ -260,4 +260,29 @@ describe('SubjectCard', () => {
 
     expect(wrapper.get('button.subject-card__expand-toggle').attributes('disabled')).toBeDefined()
   })
+
+  it('hides the edit and remove buttons when readonly', () => {
+    const wrapper = mount(SubjectCard, {
+      props: { subject, intervals: [], duration: 100, active: false, readonly: true },
+    })
+
+    expect(wrapper.find('button.subject-card__edit').exists()).toBe(false)
+    expect(wrapper.find('button.subject-card__remove').exists()).toBe(false)
+  })
+
+  it('still allows expanding a readonly card', async () => {
+    const wrapper = mount(SubjectCard, {
+      props: {
+        subject: { ...subject, description: 'Self-directed grooming behavior' },
+        intervals: [],
+        duration: 100,
+        active: false,
+        readonly: true,
+      },
+    })
+
+    await wrapper.get('button.subject-card__expand-toggle').trigger('click')
+
+    expect(wrapper.text()).toContain('Self-directed grooming behavior')
+  })
 })

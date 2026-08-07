@@ -1,21 +1,16 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useSessionStore } from '@/stores/session'
 import { useKeybinds } from '@/composables/useKeybinds'
 import { loadSession, useSessionPersistence } from '@/composables/useSessionPersistence'
 import { storageKey } from '@/utils/storageKey'
 import { toCsv } from '@/utils/csv'
 import { toJson } from '@/utils/json'
+import { downloadFile } from '@/utils/download'
+import { upsertSessionHistoryEntry } from '@/utils/sessionHistory'
 import SessionLayout from '@/components/templates/SessionLayout/SessionLayout.vue'
 import ResumeDialog from '@/components/organisms/ResumeDialog/ResumeDialog.vue'
 import type { SessionSnapshot } from '@/types'
-
-const DEFAULT_SUBJECTS = [
-  { label: 'Subject 1', key: '1' },
-  { label: 'Subject 2', key: '2' },
-  { label: 'Subject 3', key: '3' },
-  { label: 'Subject 4', key: '4' },
-]
 
 const store = useSessionStore()
 
@@ -23,6 +18,8 @@ const currentTime = ref(0)
 const playing = ref(false)
 const newSubjectLabel = ref('')
 const newSubjectKey = ref('')
+const autoSaveHistory = ref(false)
+const historyEntryId = ref<string | null>(null)
 
 const showResumeDialog = ref(false)
 const pendingSnapshot = ref<SessionSnapshot | null>(null)
@@ -44,12 +41,8 @@ function snapshotOf(): SessionSnapshot {
   return { video: store.video, subjects: store.subjects, intervals: store.intervals }
 }
 
-function seedDefaultSubjects() {
-  for (const subject of DEFAULT_SUBJECTS) store.addSubject(subject.label, subject.key)
-}
-
 onMounted(() => {
-  if (store.subjects.length === 0) seedDefaultSubjects()
+  if (store.subjects.length === 0) store.resetToDefaults()
 })
 
 useKeybinds(
@@ -64,6 +57,25 @@ useSessionPersistence(
   () => snapshotOf(),
 )
 
+/** A new video (or a reset back to none) starts a fresh session, so it gets its own history entry. */
+watch(currentStorageKey, () => {
+  historyEntryId.value = null
+})
+
+function saveToHistory() {
+  if (!store.video) return
+  if (!historyEntryId.value) historyEntryId.value = crypto.randomUUID()
+  upsertSessionHistoryEntry(historyEntryId.value, snapshotOf())
+}
+
+watch(
+  () => snapshotOf(),
+  () => {
+    if (autoSaveHistory.value) saveToHistory()
+  },
+  { deep: true },
+)
+
 function handleFileSelected(file: File) {
   const key = storageKey(file)
   const saved = loadSession(key)
@@ -75,8 +87,7 @@ function handleFileSelected(file: File) {
     return
   }
 
-  store.reset()
-  seedDefaultSubjects()
+  store.resetToDefaults()
   store.setVideo({ name: file.name, size: file.size, lastModified: file.lastModified, duration: 0 })
 }
 
@@ -120,16 +131,6 @@ function handleDiscardResume() {
   pendingSnapshot.value = null
 }
 
-function downloadFile(content: string, filename: string, mimeType: string) {
-  const blob = new Blob([content], { type: mimeType })
-  const url = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = filename
-  link.click()
-  URL.revokeObjectURL(url)
-}
-
 function handleExportCsv() {
   downloadFile(toCsv(snapshotOf()), 'crom-session.csv', 'text/csv')
 }
@@ -139,8 +140,7 @@ function handleExportJson() {
 }
 
 function handleReset() {
-  store.reset()
-  seedDefaultSubjects()
+  store.resetToDefaults()
 }
 
 function handleAddSubject(subject: { label: string; key: string }) {
@@ -159,8 +159,11 @@ function handleAddSubject(subject: { label: string; key: string }) {
       :new-subject-label="newSubjectLabel"
       :new-subject-key="newSubjectKey"
       :existing-keys="existingKeys"
+      :auto-save-history="autoSaveHistory"
       @export-csv="handleExportCsv"
       @export-json="handleExportJson"
+      @save-history="saveToHistory"
+      @update:auto-save-history="(value) => (autoSaveHistory = value)"
       @reset="handleReset"
       @file-selected="handleFileSelected"
       @loaded-metadata="handleLoadedMetadata"

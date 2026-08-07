@@ -7,6 +7,13 @@ export interface SessionState {
   intervals: Record<string, Interval[]>
 }
 
+const DEFAULT_SUBJECTS = [
+  { label: 'Subject 1', key: '1' },
+  { label: 'Subject 2', key: '2' },
+  { label: 'Subject 3', key: '3' },
+  { label: 'Subject 4', key: '4' },
+]
+
 function createId(): string {
   return crypto.randomUUID()
 }
@@ -92,6 +99,12 @@ export const useSessionStore = defineStore('session', {
       this.video = null
       this.subjects = []
       this.intervals = {}
+    },
+
+    /** Resets the session and reseeds it with the default subjects, e.g. to start a fresh session. */
+    resetToDefaults() {
+      this.reset()
+      for (const subject of DEFAULT_SUBJECTS) this.addSubject(subject.label, subject.key)
     },
   },
 })

@@ -14,6 +14,10 @@ const meta: Meta<typeof SessionLayout> = {
       description: "Disables the toolbar's export/reset actions, e.g. before a video is loaded.",
       control: 'boolean',
     },
+    autoSaveHistory: {
+      description: 'Whether the session is automatically saved to history on every change.',
+      control: 'boolean',
+    },
     playing: {
       description: 'Whether the video is currently playing. Subject cards are disabled while it isn\'t.',
       control: 'boolean',
@@ -35,6 +39,12 @@ const meta: Meta<typeof SessionLayout> = {
     },
     onExportJson: {
       description: 'Fired when the user requests a JSON export.',
+    },
+    onSaveHistory: {
+      description: 'Fired when the user requests to save the current session to history.',
+    },
+    'onUpdate:autoSaveHistory': {
+      description: 'Fired when the auto-save-to-history toggle is flipped.',
     },
     onReset: {
       description: 'Fired when the user requests to reset the session.',
@@ -83,6 +93,7 @@ type Story = StoryObj<typeof SessionLayout>
 export const Default: Story = {
   args: {
     toolbarDisabled: false,
+    autoSaveHistory: false,
     playing: true,
     newSubjectLabel: '',
     newSubjectKey: '',

@@ -31,6 +31,10 @@ const meta: Meta<typeof SubjectCard> = {
         'Whether the video is currently playing. Disables editing, removing, and collapsing the subject while true.',
       control: 'boolean',
     },
+    readonly: {
+      description: 'Hides editing and removal entirely, for read-only views such as a past session\'s history.',
+      control: 'boolean',
+    },
     onToggle: {
       description: 'Fired when the toggle button is clicked.',
     },
@@ -109,6 +113,23 @@ export const Playing: Story = {
     duration: 180,
     active: false,
     playing: true,
+  },
+}
+
+/** Read-only, e.g. viewing an archived session — no edit or remove buttons, only expand/collapse. */
+export const Readonly: Story = {
+  args: {
+    subject: {
+      id: 'a1',
+      label: 'Grooming',
+      key: 'g',
+      description: 'Licking, scratching, or otherwise self-grooming.',
+    },
+    intervals: [{ start: 10, end: 40 }],
+    duration: 180,
+    active: false,
+    disabled: true,
+    readonly: true,
   },
 }
 

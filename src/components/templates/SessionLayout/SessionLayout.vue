@@ -32,6 +32,8 @@ const props = defineProps<{
   subjects: TimerEntry[]
   /** Disables the toolbar's export/reset actions, e.g. before a video is loaded. */
   toolbarDisabled?: boolean
+  /** Whether the session is automatically saved to history on every change. */
+  autoSaveHistory?: boolean
   /** Whether the video is currently playing. Subject cards are disabled while it isn't. */
   playing?: boolean
   /** Current value of the new-subject form's label input. */
@@ -47,6 +49,10 @@ const emit = defineEmits<{
   exportCsv: []
   /** Fired when the user requests a JSON export. */
   exportJson: []
+  /** Fired when the user requests to save the current session to history. */
+  saveHistory: []
+  /** Fired when the auto-save-to-history toggle is flipped. */
+  'update:autoSaveHistory': [value: boolean]
   /** Fired when the user requests to reset the session. */
   reset: []
   /** Fired when the user selects a new video file. */
@@ -108,8 +114,11 @@ function handleAddSubject(subject: { label: string; key: string }) {
     <header class="session-layout__header">
       <AppToolbar
         :disabled="toolbarDisabled"
+        :auto-save-history="autoSaveHistory"
         @export-csv="emit('exportCsv')"
         @export-json="emit('exportJson')"
+        @save-history="emit('saveHistory')"
+        @update:auto-save-history="(value) => emit('update:autoSaveHistory', value)"
         @reset="emit('reset')"
       />
     </header>

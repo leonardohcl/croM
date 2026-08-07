@@ -1,18 +1,46 @@
 <script setup lang="ts">
+import { NButton } from 'naive-ui'
+
+export type AppPage = 'session' | 'history'
+
 /**
- * Persistent top navigation bar shown above every page. There's only one page
- * today, so this just brands the app and highlights it as the current section —
- * built as a plain list rather than router-links so more items can be added
- * once additional pages exist.
+ * Persistent top navigation bar shown above every page: the brand, links between
+ * pages (built as a plain list rather than router-links, since there's no router),
+ * and a New session action that clears the live session and jumps to it.
  */
+defineProps<{
+  /** The currently shown page, highlighted in the link list. */
+  active: AppPage
+}>()
+
+const emit = defineEmits<{
+  /** Fired when a page link is clicked, with the page to navigate to. */
+  navigate: [page: AppPage]
+  /** Fired when the user requests to start a fresh session. */
+  newSession: []
+}>()
 </script>
 
 <template>
   <nav class="app-navbar">
     <span class="app-navbar__brand">croM</span>
     <ul class="app-navbar__links">
-      <li class="app-navbar__link app-navbar__link--active">Session</li>
+      <li
+        class="app-navbar__link"
+        :class="{ 'app-navbar__link--active': active === 'session' }"
+        @click="emit('navigate', 'session')"
+      >
+        Session
+      </li>
+      <li
+        class="app-navbar__link"
+        :class="{ 'app-navbar__link--active': active === 'history' }"
+        @click="emit('navigate', 'history')"
+      >
+        History
+      </li>
     </ul>
+    <NButton size="small" @click="emit('newSession')">+ New session</NButton>
   </nav>
 </template>
 
@@ -46,6 +74,7 @@
     border-radius: 6px;
     color: vars.$timeline-tick-color;
     font-size: 0.875rem;
+    cursor: pointer;
 
     &--active {
       color: #1f2937;

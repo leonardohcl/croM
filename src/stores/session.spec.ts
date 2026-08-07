@@ -150,4 +150,15 @@ describe('session store', () => {
     expect(store.subjects).toEqual([])
     expect(store.intervals).toEqual({})
   })
+
+  it('resets and reseeds the 4 default subjects with keys 1-4', () => {
+    const store = useSessionStore()
+    store.addSubject('Stale', 'x')
+    store.setVideo({ name: 'v.mp4', size: 1, lastModified: 1, duration: 1 })
+
+    store.resetToDefaults()
+
+    expect(store.video).toBeNull()
+    expect(store.subjects.map((subject) => subject.key)).toEqual(['1', '2', '3', '4'])
+  })
 })

@@ -28,3 +28,10 @@ export interface SessionSnapshot {
   subjects: Subject[]
   intervals: Record<string, Interval[]>
 }
+
+/** A session snapshot archived to the history list, identified by when it was saved. */
+export interface SessionHistoryEntry {
+  id: string
+  savedAt: string
+  snapshot: SessionSnapshot
+}

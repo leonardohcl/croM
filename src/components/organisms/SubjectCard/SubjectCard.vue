@@ -28,6 +28,8 @@ const props = defineProps<{
   disabled?: boolean
   /** Whether the video is currently playing. Disables editing, removing, and collapsing the subject while true. */
   playing?: boolean
+  /** Hides editing and removal entirely, for read-only views such as a past session's history. */
+  readonly?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -106,7 +108,7 @@ function cancelEdit() {
       />
       <div class="subject-card__actions">
         <NButton
-          v-if="!editing"
+          v-if="!editing && !readonly"
           class="subject-card__edit"
           size="tiny"
           circle
@@ -118,6 +120,7 @@ function cancelEdit() {
           ✎
         </NButton>
         <NButton
+          v-if="!readonly"
           class="subject-card__remove"
           size="tiny"
           circle

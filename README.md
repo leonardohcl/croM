@@ -1,5 +1,7 @@
 # croM
 
+**[Live app](https://leonardohcl.github.io/croM/)**
+
 croM is a browser-based tool for coding intervals on a video: load a local video file, bind subjects/behaviors to keys, and toggle each one as you watch to record open/close timestamps. Everything runs client-side — no upload, no backend.
 
 This is an updated and improved version of the tool used in [this study](https://doi.org/10.1016/j.ijppaw.2024.101023), originally developed to meet the needs of the researchers.

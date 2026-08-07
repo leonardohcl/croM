@@ -29,23 +29,10 @@ const title = computed(() => props.snapshot?.video?.name ?? 'Session')
     preset="card"
     :title="title"
     style="width: 900px; max-width: 90vw; height: 80vh"
+    content-style="display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden;"
     :show="show"
     @update:show="(value) => emit('update:show', value)"
   >
     <SessionSnapshotView :snapshot="snapshot" />
   </NModal>
 </template>
-
-<style lang="scss" scoped>
-.session-view-modal {
-  display: flex;
-  flex-direction: column;
-
-  :deep(.n-card__content) {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0;
-  }
-}
-</style>

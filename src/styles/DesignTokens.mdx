@@ -1,0 +1,53 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Foundations/Design Tokens" />
+
+# Design tokens
+
+Tokens for the custom, non-PrimeVue pieces of croM (the interval timeline, key badges,
+active/inactive states). Defined in `src/styles/_variables.scss` — that file is the
+single source of truth; update the swatches below if you change a value there.
+
+Everything else (buttons, inputs, tables, dialogs) uses PrimeVue's own Aura theme.
+
+## Color
+
+<div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem' }}>
+  {[
+    { name: '$timeline-track-color', value: '#e5e7eb', usage: 'Unpainted background of the interval timeline' },
+    { name: '$timeline-segment-color', value: '#3b82f6', usage: 'A closed (start + end recorded) interval segment' },
+    { name: '$timeline-segment-open-color', value: '#f59e0b', usage: 'The currently open (in-progress) interval segment' },
+    { name: '$timeline-tick-color', value: '#6b7280', usage: 'Tick marks and their timestamp labels' },
+    { name: '$state-active-color', value: '#16a34a', usage: 'A subject/timer currently toggled on' },
+    { name: '$state-inactive-color', value: '#6b7280', usage: 'A subject/timer currently toggled off' },
+  ].map((token) => (
+    <div key={token.name} style={{ width: '220px' }}>
+      <div style={{
+        height: '48px',
+        borderRadius: '6px',
+        border: '1px solid #d1d5db',
+        background: token.value,
+      }} />
+      <div style={{ fontFamily: 'monospace', fontSize: '13px', marginTop: '6px' }}>{token.name}</div>
+      <div style={{ fontFamily: 'monospace', fontSize: '12px', color: '#6b7280' }}>{token.value}</div>
+      <div style={{ fontSize: '12px', marginTop: '2px' }}>{token.usage}</div>
+    </div>
+  ))}
+</div>
+
+## Spacing
+
+<div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', alignItems: 'flex-end' }}>
+  {[
+    { name: '$spacing-xs', value: '0.25rem' },
+    { name: '$spacing-sm', value: '0.5rem' },
+    { name: '$spacing-md', value: '1rem' },
+    { name: '$spacing-lg', value: '1.5rem' },
+  ].map((token) => (
+    <div key={token.name} style={{ textAlign: 'center' }}>
+      <div style={{ width: token.value, height: token.value, background: '#3b82f6', borderRadius: '2px' }} />
+      <div style={{ fontFamily: 'monospace', fontSize: '13px', marginTop: '6px' }}>{token.name}</div>
+      <div style={{ fontFamily: 'monospace', fontSize: '12px', color: '#6b7280' }}>{token.value}</div>
+    </div>
+  ))}
+</div>

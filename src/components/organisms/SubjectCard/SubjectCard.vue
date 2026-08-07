@@ -202,7 +202,8 @@ function cancelEdit() {
   padding: vars.$spacing-md;
   border: 1px solid vars.$timeline-track-color;
   border-radius: 8px;
-  background: #fff;
+  background: vars.$surface-color;
+  box-shadow: vars.$surface-shadow;
   grid-column: span 2;
 
   &--collapsed {

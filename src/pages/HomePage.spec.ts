@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { DOMWrapper, mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { createTestingPinia } from '@pinia/testing'
 import HomePage from './HomePage.vue'
@@ -34,9 +34,13 @@ describe('HomePage', () => {
 
   it('adds a subject through the form card and shows it among the subject cards', async () => {
     const { wrapper } = mountHomePage()
-    await wrapper.find('input[placeholder="e.g. Grooming"]').setValue('Grooming')
-    await wrapper.find('input[placeholder="Key"]').setValue('g')
-    await wrapper.find('form').trigger('submit')
+    const addButton = wrapper.findAll('button').find((button) => button.text() === '+ Add subject')
+    await addButton?.trigger('click')
+    await nextTick()
+
+    await new DOMWrapper(document.body.querySelector('input[placeholder="e.g. Grooming"]')!).setValue('Grooming')
+    await new DOMWrapper(document.body.querySelector('input[placeholder="Key"]')!).setValue('g')
+    await new DOMWrapper(document.body.querySelector('form')!).trigger('submit')
 
     expect(wrapper.text()).toContain('Grooming')
   })

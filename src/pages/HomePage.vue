@@ -191,5 +191,7 @@ function handleAddSubject(subject: { label: string; key: string }) {
   display: flex;
   flex-direction: column;
   gap: vars.$spacing-md;
+  height: 100%;
+  min-height: 0;
 }
 </style>

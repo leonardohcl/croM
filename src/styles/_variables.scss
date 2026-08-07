@@ -1,6 +1,10 @@
 // Shared design tokens for croM's custom (non-PrimeVue) UI pieces —
 // the interval timeline, key badges, and active/inactive states.
 
+$body-background-color: #f3f4f6;
+$surface-color: #fff;
+$surface-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
 $timeline-track-color: #e5e7eb;
 $timeline-segment-color: #3b82f6;
 $timeline-segment-open-color: #f59e0b;

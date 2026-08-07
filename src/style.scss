@@ -1,0 +1,13 @@
+@use '@/styles/variables' as vars;
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: vars.$body-background-color;
+}

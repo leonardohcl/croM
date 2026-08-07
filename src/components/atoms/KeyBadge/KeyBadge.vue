@@ -28,7 +28,7 @@ defineProps<{
   font-family: monospace;
   font-size: 0.75rem;
   color: vars.$timeline-tick-color;
-  background: #fff;
+  background: vars.$surface-color;
   box-shadow: 0 1px 0 vars.$timeline-tick-color;
 }
 </style>

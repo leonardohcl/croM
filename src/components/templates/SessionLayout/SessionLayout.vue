@@ -22,6 +22,10 @@ interface TimerEntry {
  * "add subject" button (opens a modal with the form), one for the session-wide
  * event log, and one for the per-subject interval table. Purely presentational —
  * no store connection.
+ *
+ * Sized to fill its container's height (ultimately the viewport) rather than the
+ * page's natural content height: the video grows to fill its column, and only the
+ * active tab's content scrolls internally — nothing else on the page scrolls.
  */
 const props = defineProps<{
   /** One entry per subject to render as a card, with its recorded intervals. */
@@ -102,7 +106,6 @@ function handleAddSubject(subject: { label: string; key: string }) {
 <template>
   <div class="session-layout">
     <header class="session-layout__header">
-      <h1 class="session-layout__title">croM</h1>
       <AppToolbar
         :disabled="toolbarDisabled"
         @export-csv="emit('exportCsv')"
@@ -185,33 +188,64 @@ function handleAddSubject(subject: { label: string; key: string }) {
   flex-direction: column;
   gap: vars.$spacing-lg;
   padding: vars.$spacing-lg;
+  flex: 1;
+  min-height: 0;
 
   &__header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: vars.$spacing-md;
-  }
-
-  &__title {
-    margin: 0;
+    flex: none;
   }
 
   &__main {
     display: grid;
     grid-template-columns: 2fr 1fr;
+    grid-template-rows: minmax(0, 1fr);
     gap: vars.$spacing-lg;
-    align-items: start;
+    flex: 1;
+    min-height: 0;
+  }
+
+  &__video {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+
+    :deep(.video-player) {
+      flex: 1;
+      min-height: 0;
+    }
   }
 
   &__video-details {
+    flex: none;
     margin: vars.$spacing-sm 0 0;
     color: vars.$timeline-tick-color;
     font-size: 0.875rem;
   }
 
   &__panel {
+    display: flex;
+    flex-direction: column;
     min-width: 0;
+    min-height: 0;
+    padding: vars.$spacing-md;
+    background: vars.$surface-color;
+    border-radius: 8px;
+    box-shadow: vars.$surface-shadow;
+    overflow: hidden;
+
+    :deep(.n-tabs-nav) {
+      flex: none;
+    }
+
+    :deep(.n-tabs-pane-wrapper) {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+    }
   }
 
   &__subjects {

@@ -113,8 +113,9 @@ export const Playing: Story = {
 }
 
 /**
- * Click the corner button to collapse the card — it shrinks to a wide tile showing
- * just the name/key and a compact timeline, keeping edit and remove available.
+ * Cards start collapsed — a wide tile showing just the name/key and a compact
+ * timeline. Click the corner button to expand it, keeping edit and remove available
+ * in both states.
  */
 export const Collapsible: Story = {
   args: {

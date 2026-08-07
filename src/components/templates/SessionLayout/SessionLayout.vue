@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { NButton, NModal, NTabPane, NTabs } from 'naive-ui'
 import AppToolbar from '@/components/organisms/AppToolbar/AppToolbar.vue'
 import VideoPlayer from '@/components/organisms/VideoPlayer/VideoPlayer.vue'
 import SubjectCard from '@/components/organisms/SubjectCard/SubjectCard.vue'
 import SubjectForm from '@/components/organisms/SubjectForm/SubjectForm.vue'
-import SessionReport from '@/components/organisms/SessionReport/SessionReport.vue'
+import SessionLog from '@/components/organisms/SessionLog/SessionLog.vue'
+import SessionTable from '@/components/organisms/SessionTable/SessionTable.vue'
 import { formatTime } from '@/utils/formatTime'
 import type { Interval, Subject } from '@/types'
 
@@ -16,9 +18,10 @@ interface TimerEntry {
 
 /**
  * Live recording view: a toolbar, the video (with a file name / time readout) on
- * the left, a column of subject cards plus an "add subject" card on the right,
- * and a session-wide log/table report below both. Purely presentational — no
- * store connection.
+ * the left, and a tabbed panel on the right — one tab for the subject cards + an
+ * "add subject" button (opens a modal with the form), one for the session-wide
+ * event log, and one for the per-subject interval table. Purely presentational —
+ * no store connection.
  */
 const props = defineProps<{
   /** One entry per subject to render as a card, with its recorded intervals. */
@@ -69,6 +72,7 @@ const emit = defineEmits<{
 const fileName = ref<string | null>(null)
 const currentTime = ref(0)
 const duration = ref(0)
+const showAddSubjectModal = ref(false)
 
 function handleFileSelected(file: File) {
   fileName.value = file.name
@@ -88,6 +92,11 @@ function handleTimeUpdate(value: number) {
 const reportEntries = computed(() =>
   props.subjects.map((entry) => ({ subject: entry.subject, intervals: entry.intervals })),
 )
+
+function handleAddSubject(subject: { label: string; key: string }) {
+  showAddSubjectModal.value = false
+  emit('addSubject', subject)
+}
 </script>
 
 <template>
@@ -114,35 +123,57 @@ const reportEntries = computed(() =>
           {{ fileName }} — {{ formatTime(currentTime) }} / {{ formatTime(duration) }}
         </p>
       </section>
-      <section class="session-layout__subjects">
-        <SubjectCard
-          v-for="entry in subjects"
-          :key="entry.subject.id"
-          :subject="entry.subject"
-          :intervals="entry.intervals"
-          :duration="duration"
-          :active="entry.active"
-          :disabled="!playing"
-          :playing="playing"
-          @toggle="emit('toggleSubject', entry.subject.id)"
-          @remove="emit('removeSubject', entry.subject.id)"
-          @edit="(changes) => emit('editSubject', entry.subject.id, changes)"
-        />
-        <div class="session-layout__form-card">
-          <SubjectForm
-            :label="newSubjectLabel"
-            :key-value="newSubjectKey"
-            :existing-keys="existingKeys"
-            @update:label="emit('update:newSubjectLabel', $event)"
-            @update:key-value="emit('update:newSubjectKey', $event)"
-            @submit="emit('addSubject', $event)"
-          />
-        </div>
-      </section>
+      <NTabs class="session-layout__panel" type="line" default-value="subjects" animated>
+        <NTabPane name="subjects" tab="Subjects">
+          <section class="session-layout__subjects">
+            <SubjectCard
+              v-for="entry in subjects"
+              :key="entry.subject.id"
+              :subject="entry.subject"
+              :intervals="entry.intervals"
+              :duration="duration"
+              :active="entry.active"
+              :disabled="!playing"
+              :playing="playing"
+              @toggle="emit('toggleSubject', entry.subject.id)"
+              @remove="emit('removeSubject', entry.subject.id)"
+              @edit="(changes) => emit('editSubject', entry.subject.id, changes)"
+            />
+            <NButton
+              class="session-layout__add-subject"
+              dashed
+              block
+              @click="showAddSubjectModal = true"
+            >
+              + Add subject
+            </NButton>
+          </section>
+        </NTabPane>
+        <NTabPane name="log" tab="Log">
+          <SessionLog :entries="reportEntries" />
+        </NTabPane>
+        <NTabPane name="table" tab="Table">
+          <SessionTable :entries="reportEntries" :duration="duration" />
+        </NTabPane>
+      </NTabs>
     </div>
-    <section class="session-layout__report">
-      <SessionReport :entries="reportEntries" :duration="duration" />
-    </section>
+    <NModal
+      class="session-layout__add-subject-modal"
+      preset="card"
+      title="Add subject"
+      style="width: 360px"
+      :show="showAddSubjectModal"
+      @update:show="(value) => (showAddSubjectModal = value)"
+    >
+      <SubjectForm
+        :label="newSubjectLabel"
+        :key-value="newSubjectKey"
+        :existing-keys="existingKeys"
+        @update:label="emit('update:newSubjectLabel', $event)"
+        @update:key-value="emit('update:newSubjectKey', $event)"
+        @submit="handleAddSubject"
+      />
+    </NModal>
   </div>
 </template>
 
@@ -179,6 +210,10 @@ const reportEntries = computed(() =>
     font-size: 0.875rem;
   }
 
+  &__panel {
+    min-width: 0;
+  }
+
   &__subjects {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -186,12 +221,8 @@ const reportEntries = computed(() =>
     align-items: start;
   }
 
-  &__form-card {
+  &__add-subject {
     grid-column: span 2;
-    padding: vars.$spacing-md;
-    border: 1px solid vars.$timeline-track-color;
-    border-radius: 8px;
-    background: #fff;
   }
 }
 </style>

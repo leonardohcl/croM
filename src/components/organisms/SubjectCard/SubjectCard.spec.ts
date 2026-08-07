@@ -94,7 +94,7 @@ describe('SubjectCard', () => {
     expect(wrapper.findAll('.timeline-segment')).toHaveLength(1)
   })
 
-  it('renders the description when present', () => {
+  it('renders the description when present, once expanded', async () => {
     const wrapper = mount(SubjectCard, {
       props: {
         subject: { ...subject, description: 'Self-directed grooming behavior' },
@@ -103,6 +103,8 @@ describe('SubjectCard', () => {
         active: false,
       },
     })
+
+    await wrapper.get('button.subject-card__expand-toggle').trigger('click')
 
     expect(wrapper.text()).toContain('Self-directed grooming behavior')
   })
@@ -177,17 +179,18 @@ describe('SubjectCard', () => {
     expect(wrapper.emitted('remove')).toBeUndefined()
   })
 
-  it('starts expanded, showing the edit/remove buttons and a full timeline', () => {
+  it('starts collapsed, showing the edit/remove buttons and a compact timeline', () => {
     const wrapper = mount(SubjectCard, {
       props: { subject, intervals: [], duration: 100, active: false },
     })
 
-    expect(wrapper.find('.subject-card--collapsed').exists()).toBe(false)
+    expect(wrapper.find('.subject-card--collapsed').exists()).toBe(true)
     expect(wrapper.find('button.subject-card__edit').exists()).toBe(true)
     expect(wrapper.find('button.subject-card__remove').exists()).toBe(true)
+    expect(wrapper.find('.timeline-tick').exists()).toBe(false)
   })
 
-  it('collapses to hide the description and switch to a compact timeline, keeping edit/remove available', async () => {
+  it('expands to show the description and a full timeline, keeping edit/remove available', async () => {
     const wrapper = mount(SubjectCard, {
       props: {
         subject: { ...subject, description: 'Self-directed grooming behavior' },
@@ -199,12 +202,12 @@ describe('SubjectCard', () => {
 
     await wrapper.get('button.subject-card__expand-toggle').trigger('click')
 
-    expect(wrapper.find('.subject-card--collapsed').exists()).toBe(true)
+    expect(wrapper.find('.subject-card--collapsed').exists()).toBe(false)
     expect(wrapper.find('button.subject-card__edit').exists()).toBe(true)
     expect(wrapper.find('button.subject-card__remove').exists()).toBe(true)
-    expect(wrapper.find('.subject-card__description').exists()).toBe(false)
+    expect(wrapper.find('.subject-card__description').exists()).toBe(true)
     expect(wrapper.text()).toContain('Grooming')
-    expect(wrapper.find('.timeline-tick').exists()).toBe(false)
+    expect(wrapper.find('.timeline-tick').exists()).toBe(true)
   })
 
   it('expands the card when the edit button is clicked while collapsed', async () => {
@@ -212,7 +215,6 @@ describe('SubjectCard', () => {
       props: { subject, intervals: [], duration: 100, active: false },
     })
 
-    await wrapper.get('button.subject-card__expand-toggle').trigger('click')
     expect(wrapper.find('.subject-card--collapsed').exists()).toBe(true)
 
     await wrapper.get('button.subject-card__edit').trigger('click')
@@ -239,7 +241,7 @@ describe('SubjectCard', () => {
     expect(wrapper.text()).toContain('Grooming')
   })
 
-  it('expands again when the expand toggle is clicked twice', async () => {
+  it('collapses again when the expand toggle is clicked twice', async () => {
     const wrapper = mount(SubjectCard, {
       props: { subject, intervals: [], duration: 100, active: false },
     })
@@ -247,7 +249,7 @@ describe('SubjectCard', () => {
     await wrapper.get('button.subject-card__expand-toggle').trigger('click')
     await wrapper.get('button.subject-card__expand-toggle').trigger('click')
 
-    expect(wrapper.find('.subject-card--collapsed').exists()).toBe(false)
+    expect(wrapper.find('.subject-card--collapsed').exists()).toBe(true)
     expect(wrapper.find('button.subject-card__edit').exists()).toBe(true)
   })
 

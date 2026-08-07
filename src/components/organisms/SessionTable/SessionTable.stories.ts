@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
-import SessionReport from './SessionReport.vue'
+import SessionTable from './SessionTable.vue'
 
-const meta: Meta<typeof SessionReport> = {
-  title: 'Organisms/SessionReport',
-  component: SessionReport,
+const meta: Meta<typeof SessionTable> = {
+  title: 'Organisms/SessionTable',
+  component: SessionTable,
   tags: ['autodocs'],
   argTypes: {
     entries: {
@@ -23,9 +23,9 @@ const meta: Meta<typeof SessionReport> = {
 }
 
 export default meta
-type Story = StoryObj<typeof SessionReport>
+type Story = StoryObj<typeof SessionTable>
 
-/** A log of trigger/release events across subjects, plus a per-subject table tab. */
+/** A per-subject table of recorded intervals with running totals. */
 export const Default: Story = {
   args: {
     duration: 180,
@@ -42,7 +42,7 @@ export const Default: Story = {
   },
 }
 
-/** No activity recorded yet. */
+/** No subjects yet. */
 export const Empty: Story = {
   args: {
     duration: 180,

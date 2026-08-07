@@ -79,7 +79,7 @@ const meta: Meta<typeof SessionLayout> = {
 export default meta
 type Story = StoryObj<typeof SessionLayout>
 
-/** Video and toolbar on top, a column of subject cards + add-subject card, and a log/table report below. */
+/** Video and toolbar on top; a tabbed panel on the right switches between subject cards (collapsed by default) + an add-subject button that opens a modal, the event log, and the per-subject table. */
 export const Default: Story = {
   args: {
     toolbarDisabled: false,

@@ -12,7 +12,8 @@ import type { Interval, Subject } from '@/types'
  * button swaps the label and description for input fields until saved or cancelled.
  * Collapsed, the card shrinks to a wide, short tile showing just the name/key and a
  * compact, text-free timeline. The timeline only reflects closed intervals, so it updates
- * once a timer is deactivated rather than animating while it's running.
+ * once a timer is deactivated rather than animating while it's running. Cards start
+ * collapsed and expand on demand.
  */
 const props = defineProps<{
   /** The subject/timer this card represents. */
@@ -38,7 +39,7 @@ const emit = defineEmits<{
   edit: [changes: { label: string; description: string }]
 }>()
 
-const expanded = ref(true)
+const expanded = ref(false)
 const editing = ref(false)
 const editLabel = ref('')
 const editDescription = ref('')

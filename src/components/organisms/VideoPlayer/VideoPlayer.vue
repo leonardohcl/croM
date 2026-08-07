@@ -13,6 +13,10 @@ const emit = defineEmits<{
   loadedMetadata: [duration: number]
   /** Fired periodically as the video plays, with its current time in seconds. */
   timeUpdate: [currentTime: number]
+  /** Fired when playback starts or resumes. */
+  play: []
+  /** Fired when playback pauses or the video ends. */
+  pause: []
 }>()
 
 const videoRef = ref<HTMLVideoElement | null>(null)
@@ -59,6 +63,9 @@ onBeforeUnmount(() => {
       controls
       @loadedmetadata="handleLoadedMetadata"
       @timeupdate="handleTimeUpdate"
+      @play="emit('play')"
+      @pause="emit('pause')"
+      @ended="emit('pause')"
     />
   </div>
 </template>

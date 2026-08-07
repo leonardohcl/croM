@@ -13,6 +13,8 @@ defineProps<{
   keyLabel: string
   /** Whether this subject's timer currently has an open interval. */
   active: boolean
+  /** Disables the button, e.g. while the video isn't playing. */
+  disabled?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -22,7 +24,12 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <NButton class="toggle-button" :type="active ? 'success' : 'default'" @click="emit('toggle')">
+  <NButton
+    class="toggle-button"
+    :type="active ? 'success' : 'default'"
+    :disabled="disabled"
+    @click="emit('toggle')"
+  >
     <span class="toggle-button__content">
       <span class="toggle-button__label">{{ label }}</span>
       <KeyBadge :key-label="keyLabel" />

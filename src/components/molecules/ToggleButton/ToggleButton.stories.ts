@@ -18,6 +18,10 @@ const meta: Meta<typeof ToggleButton> = {
       description: "Whether this subject's timer currently has an open interval.",
       control: 'boolean',
     },
+    disabled: {
+      description: "Disables the button, e.g. while the video isn't playing.",
+      control: 'boolean',
+    },
     onToggle: {
       description: 'Fired when the button is clicked.',
     },
@@ -35,4 +39,9 @@ export const Inactive: Story = {
 /** An interval is currently open — the button is styled to stand out. */
 export const Active: Story = {
   args: { label: 'Grooming', keyLabel: 'g', active: true },
+}
+
+/** Disabled, e.g. while the video isn't playing. */
+export const Disabled: Story = {
+  args: { label: 'Grooming', keyLabel: 'g', active: false, disabled: true },
 }

@@ -8,6 +8,23 @@ describe('session store', () => {
     setActivePinia(createPinia())
   })
 
+  it('updates the video duration once metadata loads', () => {
+    const store = useSessionStore()
+    store.setVideo({ name: 'v.mp4', size: 1, lastModified: 1, duration: 0 })
+
+    store.setVideoDuration(120)
+
+    expect(store.video?.duration).toBe(120)
+  })
+
+  it('does nothing when setting duration without a loaded video', () => {
+    const store = useSessionStore()
+
+    store.setVideoDuration(120)
+
+    expect(store.video).toBeNull()
+  })
+
   it('adds a subject with an empty interval list', () => {
     const store = useSessionStore()
 

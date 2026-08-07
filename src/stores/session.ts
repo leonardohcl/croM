@@ -44,6 +44,11 @@ export const useSessionStore = defineStore('session', {
       this.video = video
     },
 
+    /** Updates the loaded video's duration once its metadata becomes available. */
+    setVideoDuration(duration: number) {
+      if (this.video) this.video.duration = duration
+    },
+
     addSubject(label: string, key: string) {
       const subject: Subject = { id: createId(), label, key }
       this.subjects.push(subject)

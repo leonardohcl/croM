@@ -35,4 +35,20 @@ describe('AppNavbar', () => {
 
     expect(wrapper.emitted('newSession')).toHaveLength(1)
   })
+
+  it('emits openHowToUse when the How to use link is clicked', async () => {
+    const wrapper = mount(AppNavbar, { props: { active: 'session' } })
+
+    await wrapper.findAll('.app-navbar__link')[3].trigger('click')
+
+    expect(wrapper.emitted('openHowToUse')).toHaveLength(1)
+  })
+
+  it('emits openAbout when the About link is clicked', async () => {
+    const wrapper = mount(AppNavbar, { props: { active: 'session' } })
+
+    await wrapper.findAll('.app-navbar__link')[4].trigger('click')
+
+    expect(wrapper.emitted('openAbout')).toHaveLength(1)
+  })
 })

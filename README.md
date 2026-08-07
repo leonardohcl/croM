@@ -23,6 +23,15 @@ npm run dev
 
 Open the printed local URL, load a video file, and start toggling subjects.
 
+## How to use
+
+1. **Load a video.** On the *Session* tab, pick a local video file in the player. If a saved session already exists for that file, you'll be asked to resume it or start over.
+2. **Set up subjects.** Four default subjects (keys `1`–`4`) are seeded automatically. Use **+ Add subject** to add more (a label and a key). Each card has buttons to edit or remove it, plus an expand/collapse icon that just resizes the card — it has no effect on recording.
+3. **Record.** Play the video, then press a subject's bound key or click its toggle button (showing its label and key) to start an interval; press/click again to end it — each press logs the video's current timestamp. Recording only works while the video is playing.
+4. **Check the report.** Switch to the *Log* tab for a chronological list of every trigger/release event, or the *Table* tab for per-subject intervals and totals.
+5. **Save or export.** Use **Save to history** (or flip on **Auto-save to history**) to keep a copy in the *History* tab, and **Export CSV** / **Export JSON** to download the session. **Reset** clears the current session.
+6. **Revisit past sessions.** The *History* tab lists auto/manually saved sessions for read-only viewing or export. The *Load JSON* tab lets you open a previously exported JSON file the same way.
+
 ## Scripts
 
 | Command | Description |

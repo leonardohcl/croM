@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { NButton } from 'naive-ui'
+import logoUrl from '@/assets/logo.svg'
 
 export type AppPage = 'session' | 'history' | 'load'
 
@@ -18,12 +19,19 @@ const emit = defineEmits<{
   navigate: [page: AppPage]
   /** Fired when the user requests to start a fresh session. */
   newSession: []
+  /** Fired when the user requests to open the About dialog. */
+  openAbout: []
+  /** Fired when the user requests to open the How to use dialog. */
+  openHowToUse: []
 }>()
 </script>
 
 <template>
   <nav class="app-navbar">
-    <span class="app-navbar__brand">croM</span>
+    <span class="app-navbar__brand">
+      <img class="app-navbar__logo" :src="logoUrl" alt="" />
+      croM
+    </span>
     <ul class="app-navbar__links">
       <li
         class="app-navbar__link"
@@ -46,6 +54,8 @@ const emit = defineEmits<{
       >
         Load JSON
       </li>
+      <li class="app-navbar__link" @click="emit('openHowToUse')">How to use</li>
+      <li class="app-navbar__link" @click="emit('openAbout')">About</li>
     </ul>
     <NButton size="small" @click="emit('newSession')">+ New session</NButton>
   </nav>
@@ -64,8 +74,16 @@ const emit = defineEmits<{
   background: vars.$surface-color;
 
   &__brand {
+    display: flex;
+    align-items: center;
+    gap: vars.$spacing-xs;
     font-size: 1.25rem;
     font-weight: 700;
+  }
+
+  &__logo {
+    width: 24px;
+    height: 24px;
   }
 
   &__links {

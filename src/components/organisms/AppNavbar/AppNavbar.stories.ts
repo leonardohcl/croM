@@ -17,6 +17,12 @@ const meta: Meta<typeof AppNavbar> = {
     onNewSession: {
       description: 'Fired when the user requests to start a fresh session.',
     },
+    onOpenHowToUse: {
+      description: 'Fired when the user requests to open the How to use dialog.',
+    },
+    onOpenAbout: {
+      description: 'Fired when the user requests to open the About dialog.',
+    },
   },
 }
 

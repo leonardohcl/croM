@@ -1,5 +1,11 @@
 @use '@/styles/variables' as vars;
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html,
 body,
 #app {

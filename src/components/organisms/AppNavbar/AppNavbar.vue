@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { NButton } from 'naive-ui'
 
-export type AppPage = 'session' | 'history'
+export type AppPage = 'session' | 'history' | 'load'
 
 /**
  * Persistent top navigation bar shown above every page: the brand, links between
@@ -38,6 +38,13 @@ const emit = defineEmits<{
         @click="emit('navigate', 'history')"
       >
         History
+      </li>
+      <li
+        class="app-navbar__link"
+        :class="{ 'app-navbar__link--active': active === 'load' }"
+        @click="emit('navigate', 'load')"
+      >
+        Load JSON
       </li>
     </ul>
     <NButton size="small" @click="emit('newSession')">+ New session</NButton>

@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { NModal, NTabPane, NTabs } from 'naive-ui'
-import SubjectCard from '@/components/organisms/SubjectCard/SubjectCard.vue'
-import SessionLog from '@/components/organisms/SessionLog/SessionLog.vue'
-import SessionTable from '@/components/organisms/SessionTable/SessionTable.vue'
+import { NModal } from 'naive-ui'
+import SessionSnapshotView from '@/components/organisms/SessionSnapshotView/SessionSnapshotView.vue'
 import type { SessionSnapshot } from '@/types'
 
 /**
@@ -23,16 +21,6 @@ const emit = defineEmits<{
 }>()
 
 const title = computed(() => props.snapshot?.video?.name ?? 'Session')
-const duration = computed(() => props.snapshot?.video?.duration ?? 0)
-
-const entries = computed(() => {
-  const snapshot = props.snapshot
-  if (!snapshot) return []
-  return snapshot.subjects.map((subject) => ({
-    subject,
-    intervals: snapshot.intervals[subject.id] ?? [],
-  }))
-})
 </script>
 
 <template>
@@ -44,34 +32,11 @@ const entries = computed(() => {
     :show="show"
     @update:show="(value) => emit('update:show', value)"
   >
-    <NTabs class="session-view-modal__tabs" type="line" default-value="subjects" animated>
-      <NTabPane name="subjects" tab="Subjects">
-        <section class="session-view-modal__subjects">
-          <SubjectCard
-            v-for="entry in entries"
-            :key="entry.subject.id"
-            :subject="entry.subject"
-            :intervals="entry.intervals"
-            :duration="duration"
-            :active="false"
-            :disabled="true"
-            readonly
-          />
-        </section>
-      </NTabPane>
-      <NTabPane name="log" tab="Log">
-        <SessionLog :entries="entries" />
-      </NTabPane>
-      <NTabPane name="table" tab="Table">
-        <SessionTable :entries="entries" :duration="duration" />
-      </NTabPane>
-    </NTabs>
+    <SessionSnapshotView :snapshot="snapshot" />
   </NModal>
 </template>
 
 <style lang="scss" scoped>
-@use '@/styles/variables' as vars;
-
 .session-view-modal {
   display: flex;
   flex-direction: column;
@@ -81,30 +46,6 @@ const entries = computed(() => {
     flex-direction: column;
     flex: 1;
     min-height: 0;
-  }
-
-  &__tabs {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0;
-
-    :deep(.n-tabs-nav) {
-      flex: none;
-    }
-
-    :deep(.n-tabs-pane-wrapper) {
-      flex: 1;
-      min-height: 0;
-      overflow-y: auto;
-    }
-  }
-
-  &__subjects {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: vars.$spacing-sm;
-    align-items: start;
   }
 }
 </style>

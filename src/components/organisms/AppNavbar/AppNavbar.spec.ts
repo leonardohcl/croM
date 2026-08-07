@@ -9,6 +9,7 @@ describe('AppNavbar', () => {
 
     expect(links[0].classes()).not.toContain('app-navbar__link--active')
     expect(links[1].classes()).toContain('app-navbar__link--active')
+    expect(links[2].classes()).not.toContain('app-navbar__link--active')
   })
 
   it('emits navigate with the clicked page', async () => {
@@ -17,6 +18,14 @@ describe('AppNavbar', () => {
     await wrapper.findAll('.app-navbar__link')[1].trigger('click')
 
     expect(wrapper.emitted('navigate')).toEqual([['history']])
+  })
+
+  it('emits navigate with load when the Load JSON link is clicked', async () => {
+    const wrapper = mount(AppNavbar, { props: { active: 'session' } })
+
+    await wrapper.findAll('.app-navbar__link')[2].trigger('click')
+
+    expect(wrapper.emitted('navigate')).toEqual([['load']])
   })
 
   it('emits newSession when the New session button is clicked', async () => {

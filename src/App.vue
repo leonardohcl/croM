@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import HomePage from '@/pages/HomePage.vue'
 import HistoryPage from '@/pages/HistoryPage.vue'
+import LoadJsonPage from '@/pages/LoadJsonPage.vue'
 import MobileNotice from '@/components/organisms/MobileNotice/MobileNotice.vue'
 import AppNavbar, { type AppPage } from '@/components/organisms/AppNavbar/AppNavbar.vue'
 import { useIsDesktop } from '@/composables/useIsDesktop'
@@ -22,7 +23,8 @@ function handleNewSession() {
     <template v-if="isDesktop">
       <AppNavbar :active="page" @navigate="(value) => (page = value)" @new-session="handleNewSession" />
       <HomePage v-if="page === 'session'" class="app__content" />
-      <HistoryPage v-else class="app__content" />
+      <HistoryPage v-else-if="page === 'history'" class="app__content" />
+      <LoadJsonPage v-else class="app__content" />
     </template>
     <MobileNotice v-else />
   </div>

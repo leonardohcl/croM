@@ -9,7 +9,7 @@ const meta: Meta<typeof AppNavbar> = {
     active: {
       description: 'The currently shown page, highlighted in the link list.',
       control: 'radio',
-      options: ['session', 'history'],
+      options: ['session', 'history', 'load'],
     },
     onNavigate: {
       description: 'Fired when a page link is clicked, with the page to navigate to.',
@@ -31,4 +31,9 @@ export const Default: Story = {
 /** The History link highlighted as the active page. */
 export const OnHistoryPage: Story = {
   args: { active: 'history' },
+}
+
+/** The Load JSON link highlighted as the active page. */
+export const OnLoadJsonPage: Story = {
+  args: { active: 'load' },
 }

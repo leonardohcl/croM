@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NFormItem, NInput } from 'naive-ui'
-import KeyBadge from '@/components/atoms/KeyBadge.vue'
+import KeyBadge from '@/components/atoms/KeyBadge/KeyBadge.vue'
 
 /**
  * A labeled key-binding field: a single-character text input, a live KeyBadge preview

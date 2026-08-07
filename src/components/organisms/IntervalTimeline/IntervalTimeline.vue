@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import TimelineSegment from '@/components/atoms/TimelineSegment.vue'
-import TimelineTick from '@/components/atoms/TimelineTick.vue'
+import TimelineSegment from '@/components/atoms/TimelineSegment/TimelineSegment.vue'
+import TimelineTick from '@/components/atoms/TimelineTick/TimelineTick.vue'
 import { formatTime } from '@/utils/formatTime'
 import type { Interval } from '@/types'
 

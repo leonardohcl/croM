@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { NButton, NFormItem, NInput } from 'naive-ui'
-import SubjectKeyField from '@/components/molecules/SubjectKeyField.vue'
+import SubjectKeyField from '@/components/molecules/SubjectKeyField/SubjectKeyField.vue'
 
 /**
  * Controlled form to add a new subject/timer: a label field and a key-binding field

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import ToggleButton from '@/components/molecules/ToggleButton.vue'
-import IntervalTimeline from '@/components/organisms/IntervalTimeline.vue'
-import IntervalTable from '@/components/organisms/IntervalTable.vue'
+import ToggleButton from '@/components/molecules/ToggleButton/ToggleButton.vue'
+import IntervalTimeline from '@/components/organisms/IntervalTimeline/IntervalTimeline.vue'
+import IntervalTable from '@/components/organisms/IntervalTable/IntervalTable.vue'
 import type { Interval, Subject } from '@/types'
 
 /**

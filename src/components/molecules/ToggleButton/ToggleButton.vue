@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { NButton } from 'naive-ui'
-import KeyBadge from '@/components/atoms/KeyBadge.vue'
+import KeyBadge from '@/components/atoms/KeyBadge/KeyBadge.vue'
 
 /**
  * A subject's on-screen toggle control: shows its label and bound key, and reflects
